@@ -1,5 +1,6 @@
 package me.poberi.userservice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import me.poberi.userservice.dto.UserRequest;
 import me.poberi.userservice.dto.UserResponse;
@@ -15,7 +16,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody UserRequest user) {
+    public void createUser(@Valid @RequestBody UserRequest user) {
         userService.createUser(user);
     }
 
