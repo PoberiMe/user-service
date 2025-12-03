@@ -5,6 +5,7 @@ import me.poberi.userservice.dto.UserRequest;
 import me.poberi.userservice.dto.UserResponse;
 import me.poberi.userservice.model.User;
 import me.poberi.userservice.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,11 +13,12 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void createUser(UserRequest req) {
         User user = new User();
         user.setUsername(req.getUsername());
-        user.setPassword(req.getPassword());
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
         user.setEmail(req.getEmail());
         user.setDriver(req.isDriver());
 

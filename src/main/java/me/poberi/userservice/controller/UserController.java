@@ -25,4 +25,5 @@ public class UserController {
     public UserResponse getUser(@PathVariable int id) {
         return userService.getUser(id);
     }
+
 }
