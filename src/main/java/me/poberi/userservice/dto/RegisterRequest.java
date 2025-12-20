@@ -11,13 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class RegisterRequest {
     @NotBlank
     private String username;
     @NotBlank
     @Pattern(
             regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$",
-            message = "Password must be at least 8 characters long and contain one uppercase letter, one lowercase letter and one number"
+            message = "Password must be at least 8 characters long " +
+                    "and contain one uppercase letter, one lowercase letter and one number"
     )
     private String password;
     @NotBlank

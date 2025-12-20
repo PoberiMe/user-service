@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: user-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/users
+    username: user
+    password: password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  secret: "don't-know-why-it-has-to-be-so-long-but-yee"
+  expiration: 3600000 # in milliseconds (1 hour)
