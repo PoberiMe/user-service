@@ -16,8 +16,6 @@ RUN chmod +x mvnw
 # Build the app (skip tests for faster build)
 RUN ./mvnw clean package -DskipTests
 
-# Expose the port your app runs on
 EXPOSE 8080
 
-# Run the jar
 CMD ["java", "-jar", "target/user-service-0.0.1-SNAPSHOT.jar"]
