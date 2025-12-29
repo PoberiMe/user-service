@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import me.poberi.userservice.dto.LoginRequest;
 import me.poberi.userservice.dto.RegisterRequest;
 import me.poberi.userservice.dto.UserResponse;
+import me.poberi.userservice.exception.ApiException;
 import me.poberi.userservice.model.User;
 import me.poberi.userservice.repository.UserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,12 +23,13 @@ public class AuthService {
 
     public String login(LoginRequest req) {
         User user;
-        if (req.getEmail() != null) {
-            user = userRepository.findUserByEmail(req.getEmail());
-        } else if (req.getUsername() != null) {
-            user = userRepository.findUserByUsername(req.getUsername());
-        } else {
-            throw new IllegalArgumentException("Both username and email must not be null");
+
+        if (req.getIdentifier() == null || req.getIdentifier().length() < 4) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Identifier is not provided or too short");
+        }
+        user = userRepository.findUserByEmail(req.getIdentifier());
+        if (user == null) {
+            user = userRepository.findUserByUsername(req.getIdentifier());
         }
 
         if (user == null) {
@@ -42,14 +45,26 @@ public class AuthService {
     }
 
     public UserResponse register(RegisterRequest req) {
+        // Check mandatory fields
+        if (req.getPassword() == null || req.getPassword().length() < 8) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Password is not provided or too short");
+        }
+        if (req.getEmail() == null || req.getEmail().length() < 4) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Email is required");
+        }
+        if (req.getUsername() == null  || req.getUsername().length() < 4) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Username is not provided or too short");
+        }
+
         // Check if username exists
         if (userRepository.existsByUsername(req.getUsername())) {
-            throw new IllegalArgumentException("Username is already taken");
+            throw new ApiException(HttpStatus.CONFLICT,
+                    "Username " + req.getUsername() +  "is already taken");
         }
 
         // Check if email exists
         if (userRepository.existsByEmail(req.getEmail())) {
-            throw new IllegalArgumentException("Email is already registered");
+            throw new ApiException(HttpStatus.CONFLICT, "Email is already registered");
         }
 
         // Create new user

@@ -55,5 +55,16 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<Map<String, Object>> handleApi(ApiException ex) {
+        return ResponseEntity
+                .status(ex.getStatus())
+                .body(Map.of(
+                        "status", ex.getStatus().value(),
+                        "error", ex.getStatus().getReasonPhrase(),
+                        "message", ex.getMessage()
+                ));
+    }
+
 }
 
