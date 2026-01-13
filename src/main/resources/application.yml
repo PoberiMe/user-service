@@ -15,3 +15,7 @@ spring:
 jwt:
   secret: "don't-know-why-it-has-to-be-so-long-but-yee"
   expiration: 3600000 # in milliseconds (1 hour)
+
+
+cors:
+  allowed-origin: http://localhost:4200

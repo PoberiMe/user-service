@@ -7,7 +7,7 @@ import me.poberi.userservice.dto.UserResponse;
 import me.poberi.userservice.service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:4200")
+// @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
